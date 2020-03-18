@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import {navigate} from '@reach/router'
+import Form from '../components/form'
 
 export default ( props ) => {
 
@@ -16,41 +17,17 @@ export default ( props ) => {
             return "Loading..."
         }
 
-    const onChangeHandler = (e) => {
-        setProduct({
-            ...product,
-            [e.target.name] : e.target.value
-        })
-    }
-
-    const onSubmitHandler = (e) => {
-        e.preventDefault();
-        axios.put("http://localhost:8000/api/products/edit/" + props.id,
-            product)
-            .then(res=> navigate("/products/" + res.data._id));
+    const onSubmitProp = (res) => {
+        navigate("/products/" + res.data._id)
     }
 
     return (
-
         <div>
-            <form onSubmit={onSubmitHandler}> 
-                <p>
-                    <label>Title: </label>
-                    <input name="title" value={product.title} onChange={onChangeHandler}/>
-                </p>
-                <p>
-                    <label>Price: </label>
-                    <input name="price" value={product.price} onChange={onChangeHandler}/>
-                </p>
-                <p>
-                    <label>Description: </label>
-                    <input name="description" value={product.description} onChange={onChangeHandler}/>
-                </p>
-                
-                <button>Update</button>
-            </form>
+            <Form initialState={product}
+            method = "put"
+            url = {"http://localhost:8000/api/products/edit/" + props.id}
+            onSubmitProp = {onSubmitProp}/>
         </div>
-
 
     )
 
