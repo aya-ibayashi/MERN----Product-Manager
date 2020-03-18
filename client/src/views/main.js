@@ -13,22 +13,23 @@ const Main = () => {
     useEffect (()=>{
     axios.get("http://localhost:8000/api/products")
         .then(res=>{
-            setProductsList(res);
+            setProductsList(res.data);
             setLoaded(true);
             console.log(res)})
         .catch(err=>console.log(err))
     }, [])
 
+    const removeFromDom = (id) => {
+        setProductsList(productsList.filter(product => product._id !== id));
+    }
+
 
     return (
-
         <>
             <ProductForm/>
             <hr/>
-            {loaded && <ProductsList products = {productsList}/>}
+            {loaded && <ProductsList removeFromDom = {removeFromDom} products = {productsList}/>}
         </>
-
-
     )
 
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { navigate } from '@reach/router';
 
 export default () => {
     const [formState, setFormState] = useState({
@@ -23,9 +24,8 @@ export default () => {
             price: formState.price,
             description: formState.description
         })
-            .then(res=> console.log(res))
-            .catch(err=>console.log(err))
-        
+            .then(res=> navigate("/products/" + res.data._id))
+            .catch(err=> err)
     }
 
 
@@ -39,7 +39,7 @@ export default () => {
                 </p>
                 <p>
                     <label>Price</label>
-                    <input name="price" value={formState.price} onChange = {onChangeHandler}></input>
+                    <input type="number" name="price" value={formState.price} onChange = {onChangeHandler}></input>
                 </p>
                 <p>
                     <label>Description</label>
