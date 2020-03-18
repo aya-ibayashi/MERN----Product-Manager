@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import axios from 'axios'
 import { Link, navigate } from '@reach/router'
+import Delete from '../components/delete'
 
 export default (props) => {
 
@@ -12,11 +13,8 @@ export default (props) => {
                 ...res.data}))
     }, [])
 
-    const deleteProduct = (e) => {
-        axios.delete("http://localhost:8000/api/products/delete/" + props.id)
-            .then(res => navigate("/products") )
-            .catch(err=>console.log("err"))
-        
+    const onDeleteProp = () => {
+        navigate("/products") 
     }
 
     return (
@@ -28,7 +26,7 @@ export default (props) => {
             <br/>
             <Link to="/products">Return to list</Link>
             <br/>
-            <button onClick = {deleteProduct}>Delete</button>
+            <Delete id = {props.id} onDeleteProp = {onDeleteProp}/>
         </>
 
     )

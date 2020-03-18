@@ -1,37 +1,33 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState} from 'react';
 import { navigate } from '@reach/router';
+import axios from 'axios';
 
-export default () => {
-    const [formState, setFormState] = useState({
-        title: "",
-        price: "",
-        description:"",
-    });
+function Form ({initialState, method, url, onSubmitProp }) {
 
+    const [formState, setFormState] = useState(initialState);
+       
     const onChangeHandler = (e) => {
+        const {name, value} = e.target
+
         setFormState({
             ...formState,
-            [e.target.name] : e.target.value
+            [name] : value
         })
     }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-
-        axios.post('http://localhost:8000/api/products/create',{
-            title: formState.title,
-            price: formState.price,
-            description: formState.description
+        axios({
+            method,
+            url,
+            data: formState
         })
-            .then(res=> navigate("/products/" + res.data._id))
-            .catch(err=> err)
+            .then(response => onSubmitProp(response))
     }
 
 
     return (
         <>
-            <h3>Product Manager</h3>
             <form onSubmit={onSubmitHandler}>
                 <p>
                     <label>Title</label>
@@ -56,7 +52,6 @@ export default () => {
     )
 
 
-
-
-
 }
+
+export default Form;
